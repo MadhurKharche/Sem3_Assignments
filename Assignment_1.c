@@ -1,6 +1,15 @@
+/* Name : Madhur Ajay Kharche
+   Roll No : SYITA155
+   Assignment 1 : Represent sets using one-dimensional arrays and implement functions to perform
+i. Union
+ii. Intersection
+iii. Difference
+iv. Symmetric difference of two sets */
+
 #include<stdio.h>
 
- void Union(int a[],int sizeA,int b[],int sizeB, int c[]){
+// Union
+void Union(int a[],int sizeA,int b[],int sizeB, int c[]){
     
     int resctr=0;
     
@@ -25,92 +34,163 @@
 
     printf("\n\nUnion of the entered sets is : {");
 for(int p=0 ; p<resctr; p++){
-    printf("%d , ",c[p]);
-}
-
-printf("}");
-}
-
-
-//  void Intersection(int a[],int sizeA,int b[],int sizeB,int c[]){
-//  int ctr;
-//  for(int a=0; a<sizeA+sizeB ; a++){
-//             c[a]=0;
-//  }
-//      for(int i=0; i<sizeA ; i++){
-//         ctr=1;
-//          for(int j=0; j<sizeB ; j++){
-//             if(a[i]==b[j]){
-//                 ctr=1;
-//                 break;
-//             }
-//          }
-//          if(ctr==0){
-//              c[ctr] = a[i];
-//              ctr++;
-//          }
-//      }
-
-//      printf("\n\n Intersection of the 2 sets is : {");
-// for(int p=0 ; p<ctr; p++){
-//     printf("%d , ",c[p]);
-// }
-// printf("}");
-// } 
-// void Diffeence(int a[],int b[],int c[]);
-// void Symmetric(int a[],int b[],int c[]);
-void Intersection(int s1[],int m,int s2[],int n,int s3[])
-{
-	int i,j,f,k=0;
-	for(i=0;i<m+n;i++)
-	{
-		s3[i]=0;
-	}
-	for(i=0;i<n;i++)
-	{
-		f=1;
-		for(j=0;j<n;j++)
-		{
-			if(s1[i]==s2[j])
-			{
-				f=0;
-				break;
-			}
-		}
-
-	if(f==0)
-	{
-		s3[k]=s1[i];
-		k++;
-	}
-	}
-         printf("\n\n Intersection of the 2 sets is : {");
-for(int p=0 ; p<k; p++){
-    printf("%d , ",s3[p]);
+    printf("%d",c[p]);
+    if(p<resctr-1){
+        printf(", ");
+    }
 }
 printf("}");
 }
 
+// Intersection
+ void Intersection(int a[],int sizeA,int b[],int sizeB,int c[]){
+ int ctr=0,flag;
+ for(int a=0; a<sizeA+sizeB ; a++){
+            c[a]=0;
+ }
+     for(int i=0; i<sizeA ; i++){
+        flag=0;
+         for(int j=0; j<sizeB ; j++){
+            if(a[i]==b[j]){
+                flag=1;
+                break;
+            }
+         }
+         if(flag){
+             c[ctr] = a[i];
+             ctr++;
+         }
+     }
+
+printf("\n\n Intersection of the 2 sets is : {");
+for(int p=0 ; p<ctr; p++){
+    printf("%d",c[p]);
+    if(p<ctr-1)
+    printf(", ");
+}
+printf("}");
+} 
+
+// Difference
+void Difference(int a[],int size1,int b[],int size2,int c[]){
+int ctr=0,flag;
+
+ for(int a=0; a<size1+size2 ; a++){
+            c[a]=0;
+ }
+
+for(int i=0; i<size1 ; i++){
+    flag=1;
+    for(int j=0; j<size2 ; j++){
+        if(a[i]==b[j]){
+            flag=0;
+            break;
+        }
+    }
+
+    if(flag){
+        c[ctr] = a[i];
+        ctr++;
+    }
+}
+printf("{");
+for(int h=0; h<ctr; h++){
+    printf("%d",c[h]);
+    if(h<ctr-1){
+        printf(", ");
+    }
+}
+printf("}");
+}
+
+// Symmetric Difference
+void Symmetric_Difference(int a[],int sizeA,int b[],int sizeB,int c[]){
+     int ctr=0;
+     for(int a=0; a<sizeA+sizeB ; a++){
+            c[a]=0;
+     }
+
+for(int i=0; i<sizeA ; i++){
+    int flag=0;
+    for(int j=0; j<sizeB ; j++){
+            if(a[i]==b[j]){
+                flag=1;
+                break;
+            }
+    }
+    if(flag==0){
+        c[ctr] = a[i];
+        ctr++;
+    }
+}
+
+for(int i=0; i<sizeB; i++){
+ int flag=0;
+    for(int j=0; j<sizeA ; j++){
+        if(b[i]==a[j]){
+            flag=1;
+            break;
+        }
+    }
+        if(flag==0){
+        c[ctr] = b[i];
+        ctr++;
+        }
+}
+
+printf("\n Symmetric Difference is : {");
+for(int i=0; i<ctr ; i++){
+    printf("%d",c[i]);
+
+    if(i<ctr-1){
+        printf(", ");
+    }
+}
+printf("}");
+}
 
 int main(){
-    int Arr1[20],Arr2[20],Res[40];
-unsigned int choice;
 
+int Arr1[20],Arr2[20],Res[40];
+unsigned int choice ,difference;
+        
 int l1,l2;
     printf("\nEnter number of elements in set A : ");
     scanf("%d",&l1);
-    printf("\n Enter elements of set A : {");
+    printf("\n Enter elements of set A :");
+    int ctr=1;
             for(int i=0; i<l1;i++){
+                printf("\n Enter element %d : ",ctr);
                 scanf("%d",&Arr1[i]);
+                ctr++;
             }
-    printf("}");
+    
+    ctr=0;
     printf("\nEnter number of elements in second set : ");
     scanf("%d",&l2);
-    printf("\n Enter elements of set B: {");
+    printf("\n Enter elements of set B:");
             for(int i=0; i<l2;i++){
+            printf("\n Enter element %d : ",ctr+1);
             scanf("%d",&Arr2[i]);
             }
-    printf("}");
+
+printf("\n Set A is {");
+for(int i=0; i<l1 ; i++){
+    printf("%d",Arr1[i]);
+    if(i<l1-1){
+        printf(", ");
+    }
+}
+printf("}");
+
+printf("\n Set B is {");
+for(int i=0; i<l2 ; i++){
+    printf("%d",Arr2[i]);
+    if(i<l2-1){
+        printf(", ");
+    }
+}
+printf("}");
 
 do{
 printf("\n\nChoose Operation from the below menu : ");
@@ -125,11 +205,21 @@ case 1: Union(Arr1,l1,Arr2,l2,Res);
 case 2: Intersection(Arr1,l1,Arr2,l2,Res);
         break;
 
-// case 3: Diffeence(Arr1,Arr2,Res);
-//           break;
+case 3: printf("\n Select which operation you wish to perform : \n 1) A-B \t 2) B-A");
+printf("\n Enter your choice : ");
+        scanf("%d",&difference);
+        if(difference==1){
+            printf("\n Elements of set A-B are : ");
+            Difference(Arr1,l1,Arr2,l2,Res);
+        }
+        else{
+            printf("\n Elements of B-A are : ");
+            Difference(Arr2,l2,Arr1,l1,Res);
+        }
+        break;
 
-// case 4: Symmetric(Arr1,Arr2,Res);
-//           break;
+case 4: Symmetric_Difference(Arr1,l1,Arr2,l2,Res);
+        break;
 
 case 5: printf("\n Thank You!");
           break;

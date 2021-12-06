@@ -8,20 +8,20 @@ struct Player_Info
     char Country[20];
     int Category;
     float Avg;
-}p[5];
+}p[15];
 
 int main(){
     char PlayerCountry[20];
-    int n;
+    int n, max_wickets;
     
     printf("\n Enter the Number of Players : ");
     scanf("%d",&n);
 
-    float Avg[n];
-void Accept(struct Player_Info p[5],int n);
-void Display(struct Player_Info p[5],int n);
-void Country_Category(struct Player_Info p[5] , int n , char Country[20],int category);
-void Sort(struct Player_Info p[5] , int n , float Average[],int function);
+void Accept(struct Player_Info p[15],int n);
+void Display(struct Player_Info p[15],int n);
+void Country_Category(struct Player_Info p[15] , int n , char Country[20],int category);
+void Sort(struct Player_Info p[15] , int n , int function);
+int Binary_search(struct Player_Info p[15] , int n,int MaxWickets);
 
 Accept(p,n);
 Display(p,n);
@@ -48,11 +48,11 @@ case 1 :printf("\n Finding Batsmen of a Particular country");
         break;
 
 case 2 : printf("\n Order of Batting Average is : ");
-         Sort(p,n,Avg,1);
+         Sort(p,n,1);
          break;
 
 case 3 : printf("\n Batsman with highest batting average is  : ");
-         Sort(p,n,Avg,2);
+         Sort(p,n,2);
          break;
 
 case 4 : printf("\n Bowlers of entered country are : ");
@@ -62,24 +62,21 @@ case 4 : printf("\n Bowlers of entered country are : ");
          break;
          
 case 5 : printf("\n Bowler with Maximum number of wickets is : ");
-         int max_wickets=p[0].wickets;
+         max_wickets = p[0].wickets;
 
          for(int i=1; i<n ; i++){
                 if(p[i].wickets>max_wickets){
                     max_wickets = p[i].wickets;
                 }
          }
-         for(int j=0; j<n; j++){
-             if(p[j].wickets==max_wickets){
-                 printf("%s",p[j].Name);
-             }
-         }
+         int index = Binary_search(p,n,max_wickets);
+        printf("%s",p[index].Name);
         break;
 
 case 6 : printf("\n Enter player name : ");
         char Player_Name[20];
         scanf("%s",Player_Name);
-        void SearchByName(struct Player_Info p[5] , int n , char Name[20]);
+        void SearchByName(struct Player_Info p[15] , int n , char Name[20]);
         SearchByName(p,n,Player_Name);
         break;
 
@@ -88,13 +85,14 @@ case 7 : Display(p,n);
 
 case 8 : printf("\n Thank you"); 
         break;
+
 default: printf("\n You have entered a Invalid choice");
         break;
 }
 }while(choice!=8);
 }
 
-void Accept(struct Player_Info p[5], int n){
+void Accept(struct Player_Info p[15], int n){
     for(int i=0; i<n ; i++){
         printf("\n\n Enter Info of Player %d",i+1);
         printf("\n Player Name : ");
@@ -126,21 +124,23 @@ void Accept(struct Player_Info p[5], int n){
     }
 }
 
-void Display(struct Player_Info p[5] , int n){
-
+void Display(struct Player_Info p[15] , int n){
+printf("\n Name \t Country \t Age \t\t ODIS \t\t T20s \t\t Wickets \t   Runs \t   Average");
     for(int i=0; i<n ; i++){
-        printf("\n\n-------------------Player %d----------------------",i+1);
-        printf("\n Name : %s",p[i].Name);
-        printf("\n Country : %s",p[i].Country);
-        printf("\n Age : %d",p[i].Age);
-        printf("\n Runs : %d",p[i].Runs);
-        printf("\n ODIs : %d" , p[i].ODIs);
-        printf("\n T20s : %d",p[i].T20s);
-        printf("\n Batting Average : %.2f" , p[i].Avg);
+        // printf("\n\n-------------------Player %d----------------------",i+1);
+        // printf("\n Name : %s",p[i].Name);
+        // printf("\n Country : %s",p[i].Country);
+        // printf("\n Age : %d",p[i].Age);
+        // printf("\n Runs : %d",p[i].Runs);
+        // printf("\n ODIs : %d" , p[i].ODIs);
+        // printf("\n T20s : %d",p[i].T20s);
+        // printf("\n Batting Average : %.2f" , p[i].Avg);
+
+        printf("\n %s \t %s \t\t %d \t\t %d \t\t %d \t\t %d \t\t %d \t\t %.2f",p[i].Name,p[i].Country,p[i].Age,p[i].ODIs,p[i].T20s,p[i].wickets,p[i].Runs,p[i].Avg);
     }
 }
 
-void Country_Category(struct Player_Info p[5] , int n , char Country[20],int category){
+void Country_Category(struct Player_Info p[15] , int n , char Country[20],int category){
 int count=0;
 if(category==1)
 printf("\n Batsmen of the Entered Country are : ");
@@ -156,53 +156,55 @@ printf("\n Bowlers of the Entered COuntry are : ");
     printf("\n Total number of entered category is : %d",count);
 }
 
-void SearchByName(struct Player_Info p[5] , int n , char Name[20]){
+void SearchByName(struct Player_Info p[15] , int n , char Name[20]){
 
-for(int i=0; i<n ; i++){
-
-if(strcmp(p[i].Name,Name)==0){
-printf("\n");
-printf("Name \t\t Age \t\t Country \t\t ODIS \t\t T20s \t\t Runs \t\t Wickets \t\t Average\n");
-printf("%s \t\t %d \t\t %s \t\t\t %d \t\t %d \t\t %d \t\t %d \t\t %.2f",p[i].Name,p[i].Age,p[i].Country,p[i].ODIs,p[i].T20s,p[i].Runs,p[i].wickets,p[i].Avg);
-}
-
-}
-}
-
-void Sort(struct Player_Info p[5] , int n,float Average[],int function){
-    for(int h=0; h<n ; h++){
-        Average[h]=p[h].Avg;
-    }
-    int i ,j;
-    float key;
-    for (i = 1; i < n; i++) {
-        key = Average[i];
-        j = i - 1;
-
-        while (j >= 0 && Average[j] > key) {
-            Average[j + 1] = Average[j];
-            j = j - 1;
-        }
-        Average[j + 1] = key;
-    }
-
-if(function==1){
-int count=0;
-for(int i=n-1 ; i>=0 ; i--){
-    for(int j=0 ; j<n ; j++){
-        if(Average[i]==p[j].Avg){
-            count++;
-            printf("\n %d) %s",count,p[j].Name);
-        }
-    }
-}
-}
-
-else if(function==2){
     for(int i=0; i<n ; i++){
-        if(Average[n-1]==p[i].Avg){
-            printf("%s" , p[i].Name);
+
+        if(strcmp(p[i].Name,Name)==0){
+        printf("\n");
+        printf("Name \t\t Age \t\t Country \t\t ODIS \t\t T20s \t\t Runs \t\t Wickets \t\t Average\n");
+        printf("%s \t\t %d \t\t %s \t\t\t %d \t\t %d \t\t %d \t\t %d \t\t %.2f",p[i].Name,p[i].Age,p[i].Country,p[i].ODIs,p[i].T20s,p[i].Runs,p[i].wickets,p[i].Avg);
         }
     }
 }
+
+void Sort(struct Player_Info p[15] , int n,int function){
+   
+    int i ,j;
+    struct Player_Info temp;
+    
+    for (i = 0; i < n-1; i++)
+    {
+        for (j = 0; j < (n- 1-i); j++)
+        {
+            if(p[j].Avg < p[j+1].Avg)
+            {
+                temp = p[j];
+                p[j] = p[j+1];
+                p[j+1] = temp;
+            } 
+        }
+    }
+
+    Display(p,n);
+}
+
+int Binary_search(struct Player_Info p[15] , int n, int MaxWickets){
+    int beg=0, end=n-1;
+int mid=0;
+
+    while(beg<=end){
+        mid = (beg+end)/2;
+
+        if(p[mid].wickets==MaxWickets){
+            return mid;
+        }
+
+        else if(p[mid].wickets>MaxWickets){
+            end = mid-1;
+        }
+        else{
+            beg = mid+1;
+        }
+    }
 }
